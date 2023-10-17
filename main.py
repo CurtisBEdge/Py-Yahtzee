@@ -5,11 +5,11 @@ def number_of_players():
     valid_choice = 0
     while valid_choice == 0:
         print('Please enter number of players (1 to 4)')
-        players = input()
-        if players != '1' and players != '2' and players != '3' and players != '4':
+        players_input = input()
+        if players_input != '1' and players != '2' and players != '3' and players != '4':
             print("I didn't not catch that, please enter a number from 1 to 4")
         else:
-            return int(players)
+            return int(players_input)
 
 
 def current_player_scorecard(player_turn):
@@ -24,63 +24,63 @@ def current_player_scorecard(player_turn):
     return player_scorecard
 
 
-def display_player_scorecard(playerScorecard):
+def display_player_scorecard(player_scorecard):
     print()
-    print('1.Ones             ' + str(playerScorecard[0]))
-    print('2.Twos             ' + str(playerScorecard[1]))
-    print('3.Threes           ' + str(playerScorecard[2]))
-    print('4.Fours            ' + str(playerScorecard[3]))
-    print('5.Fives            ' + str(playerScorecard[4]))
-    print('6.Sixes            ' + str(playerScorecard[5]))
-    print('7.Three of a Kind  ' + str(playerScorecard[6]))
-    print('8.Four of a Kind   ' + str(playerScorecard[7]))
-    print('9.Full House       ' + str(playerScorecard[8]))
-    print('10.Low Straight    ' + str(playerScorecard[9]))
-    print('11.High Straight   ' + str(playerScorecard[10]))
-    print('12.Yahtzee         ' + str(playerScorecard[11]))
-    print('13.Chance          ' + str(playerScorecard[12]))
+    print('1.Ones             ' + str(player_scorecard[0]))
+    print('2.Twos             ' + str(player_scorecard[1]))
+    print('3.Threes           ' + str(player_scorecard[2]))
+    print('4.Fours            ' + str(player_scorecard[3]))
+    print('5.Fives            ' + str(player_scorecard[4]))
+    print('6.Sixes            ' + str(player_scorecard[5]))
+    print('7.Three of a Kind  ' + str(player_scorecard[6]))
+    print('8.Four of a Kind   ' + str(player_scorecard[7]))
+    print('9.Full House       ' + str(player_scorecard[8]))
+    print('10.Low Straight    ' + str(player_scorecard[9]))
+    print('11.High Straight   ' + str(player_scorecard[10]))
+    print('12.Yahtzee         ' + str(player_scorecard[11]))
+    print('13.Chance          ' + str(player_scorecard[12]))
     print()
 
 
 def rolling():
     # Roll the dice and decide which ones to keep or re-roll
-    dOne = random.randint(1, 6)
-    dTwo = random.randint(1, 6)
-    dThree = random.randint(1, 6)
-    dFour = random.randint(1, 6)
-    dFive = random.randint(1, 6)
+    d_one = random.randint(1, 6)
+    d_two = random.randint(1, 6)
+    d_three = random.randint(1, 6)
+    d_four = random.randint(1, 6)
+    d_five = random.randint(1, 6)
 
     reroll = 1
     while reroll < 3:
         print()
         print('Your dice are...')
-        print(dOne, dTwo, dThree, dFour, dFive)
+        print(d_one, d_two, d_three, d_four, d_five)
         print()
         print('Which do you want to reroll? Enter dice number, 6 to reroll all or 0 to keep all')
         choice = list(map(int, input().split()))
         if 0 in choice:
             break
         if 6 in choice:
-            dOne = random.randint(1, 6)
-            dTwo = random.randint(1, 6)
-            dThree = random.randint(1, 6)
-            dFour = random.randint(1, 6)
-            dFive = random.randint(1, 6)
+            d_one = random.randint(1, 6)
+            d_two = random.randint(1, 6)
+            d_three = random.randint(1, 6)
+            d_four = random.randint(1, 6)
+            d_five = random.randint(1, 6)
         if 1 in choice:
-            dOne = random.randint(1, 6)
+            d_one = random.randint(1, 6)
         if 2 in choice:
-            dTwo = random.randint(1, 6)
+            d_two = random.randint(1, 6)
         if 3 in choice:
-            dThree = random.randint(1, 6)
+            d_three = random.randint(1, 6)
         if 4 in choice:
-            dFour = random.randint(1, 6)
+            d_four = random.randint(1, 6)
         if 5 in choice:
-            dFive = random.randint(1, 6)
+            d_five = random.randint(1, 6)
         reroll = reroll + 1
 
     print('Your dice are...')
-    print(dOne, dTwo, dThree, dFour, dFive)
-    return (dOne, dTwo, dThree, dFour, dFive)
+    print(d_one, d_two, d_three, d_four, d_five)
+    return d_one, d_two, d_three, d_four, d_five
 
 
 def ones(results, player_scorecard):
@@ -238,28 +238,20 @@ def lowStraight(results, playerScorecard):
 
     check = all(item in results for item in score1)
     if check is True:
-        lowStraight = 30
+        return 30
     if check is False:
         check = all(item in results for item in score2)
         if check is True:
-            lowStraight = 30
+            return 30
         if check is False:
             check = all(item in results for item in score3)
             if check is True:
-                lowStraight = 30
+                return 30
             if check is False:
-                lowStraight = 0
+                return 0
 
     if playerScorecard[11] == 50:
-        i = 1
-        while i < 7:
-            if results.count(i) == 5:
-                ones = 50
-                break
-            else:
-                i = i + 1
-    return lowStraight
-
+        return yahtzee(results)
 
 def highStraight(results, playerScorecard):
     highStraight = 0
@@ -281,30 +273,28 @@ def highStraight(results, playerScorecard):
     return highStraight
 
 
-def yahtzee(results, playerScorecard):
-    yahtzee = 0
-    i = 1
-    while i < 7:
-        if results.count(i) == 5:
-            yahtzee = 50
-            break
+def yahtzee(results):
+    i = 0
+    while i < 5:
+        if results[i] != results[i + 1]:
+            return 0
         else:
-            i = i + 1
+            i += 1
 
-    return yahtzee
+    return 50
 
 
 def chance(results, playerScorecard):
-    chance = results[0] + results[1] + results[2] + results[3] + results[4]
+    chanceScore = results[0] + results[1] + results[2] + results[3] + results[4]
     if playerScorecard[11] == 50:
         i = 1
         while i < 7:
             if results.count(i) == 5:
-                chance = 50
+                chanceScore = 50
                 break
             else:
                 i = i + 1
-    return chance
+    return chanceScore
 
 
 def scorePlacement(results, playerTurn, playerScorecard):
@@ -348,7 +338,7 @@ def scorePlacement(results, playerTurn, playerScorecard):
             playerScorecard[10] = highStraight(results, playerScorecard)
 
         elif choice == '12':
-            playerScorecard[11] = yahtzee(results, playerScorecard)
+            playerScorecard[11] = yahtzee(results)
 
         elif choice == '13':
             playerScorecard[12] = chance(results, playerScorecard)
